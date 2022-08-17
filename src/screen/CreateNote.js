@@ -4,11 +4,11 @@ import {addDoc, collection, getFirestore } from 'firebase/firestore';
 import initializeAuthentication from "../Firebase/firebase.init";
 import { useNavigation } from "@react-navigation/native";
 
-const CreateNote = ({navigation, user}) => {
+const CreateNote = ({user}) => {
 
   const app = initializeAuthentication();
 
-  const navigations = useNavigation();
+  const navigation = useNavigation();
 
   const db = getFirestore(app);
 
@@ -25,7 +25,7 @@ const CreateNote = ({navigation, user}) => {
         note: note,
         uid: user.uid
       })
-      navigations.goBack();
+      navigation.goBack();
       alert("Note created successfully");
     } catch (error) {
       console.log(error);
