@@ -4,7 +4,14 @@ import { AntDesign } from "@expo/vector-icons";
 import styles from "../styles/AllStyle";
 import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 
-const NoteItem = ({ item }) => {
+type Props = {
+  item: {
+    id: string,
+    note: string
+  }
+}
+
+const NoteItem: React.FC<Props> = ({ item }) => {
   const db = getFirestore();
 
   return (

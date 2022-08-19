@@ -19,23 +19,24 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import initializeAuthentication from "../Firebase/firebase.init";
 import NoteItem from "../components/NoteItem";
+import { HomeProps, noteListProps } from "../Types/types";
 
-const Home = ({ navigation, user }) => {
+const Home: React.FC<HomeProps> = ({ navigation, uid, email }) => {
   const auth = getAuth();
   const app = initializeAuthentication();
   const db = getFirestore(app);
-  const [noteList, setNoteList] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [noteList, setNoteList] = useState<noteListProps>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     // query
-    const q = query(collection(db, "notes"), where("uid", "==", user.uid));
+    const q = query(collection(db, "notes"), where("uid", "==", uid));
 
     // listener
     const noteListener = onSnapshot(q, (querySnapShot) => {
-      const container = [];
+      const container: any = [];
       querySnapShot.forEach((doc) => {
-        container.push({...doc.data(), id: doc.id});
+        container.push({ ...doc.data(), id: doc.id });
       });
       setNoteList(container);
       setIsLoading(false);
@@ -46,10 +47,10 @@ const Home = ({ navigation, user }) => {
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator />
       </View>
-    )
+    );
   }
 
   // user logout
@@ -64,7 +65,7 @@ const Home = ({ navigation, user }) => {
   return (
     <View style={{ paddingBottom: 20 }}>
       <View style={styles.HomeHeader}>
-        <Text style={{ color: "#fff", fontSize: 16 }}>{user?.email}</Text>
+        <Text style={{ color: "#fff", fontSize: 16 }}>{email}</Text>
         <Pressable style={styles.logOutBtn}>
           <Button onPress={logOut} title="Log Out" />
         </Pressable>
@@ -85,7 +86,9 @@ const Home = ({ navigation, user }) => {
       </View>
       <ScrollView style={{ marginTop: 30, paddingHorizontal: 20 }}>
         {noteList?.length > 0 ? (
-          noteList?.map((note, index) => <NoteItem key={index} item={note} navigation={navigation} />)
+          noteList?.map((note: any, index: number) => (
+            <NoteItem key={index} item={note} />
+          ))
         ) : (
           <Text
             style={{

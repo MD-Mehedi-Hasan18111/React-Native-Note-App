@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { Button, Pressable, Text, TextInput, View } from "react-native";
 import styles from "../styles/AllStyle";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Alert } from "react-native";
+import { navigationProps } from "../Types/types";
 
-const SignIn = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignIn: React.FC<navigationProps> = ({ navigation }) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const auth = getAuth();
 
@@ -17,13 +19,13 @@ const SignIn = ({ navigation }) => {
             console.log(userCredential.user.email);
           })
           .catch((err) => {
-            alert(err.message);
+            Alert.alert(err.message);
           });
       } else {
-        alert("Password must be at least 6 character");
+        Alert.alert("Password must be at least 6 character");
       }
     } else {
-      alert("Input field must be fill up");
+      Alert.alert("Input field must be fill up");
     }
   };
 

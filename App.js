@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect, useState } from "react";
@@ -15,13 +14,14 @@ export default function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState({});
-
   const [loading, setLoading] = useState(true);
 
+  // Initialize Firebase App
   initializeAuthentication();
 
   const auth = getAuth();
 
+  // user persist
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -36,26 +36,27 @@ export default function App() {
     });
   }, [auth]);
 
+  // screen loader
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator />
       </View>
-    )
+    );
   }
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="Sign In" component={SignIn} />
-        <Stack.Screen name="Sign Up" component={SignUp} /> */}
         {isLoggedIn ? (
           <>
             <Stack.Screen name="Home">
-              {(props) => <Home {...props} user={user} />}
+              {(props) => (
+                <Home {...props} uid={user?.uid} email={user?.email} />
+              )}
             </Stack.Screen>
             <Stack.Screen name="Create Note">
-              {(props) => <CreateNote {...props} user={user} />}
+              {(props) => <CreateNote {...props} uid={user?.uid} />}
             </Stack.Screen>
           </>
         ) : (

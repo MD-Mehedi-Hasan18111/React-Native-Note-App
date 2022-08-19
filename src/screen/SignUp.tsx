@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Button, Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Button, Pressable, Text, TextInput, View } from "react-native";
 import styles from "../styles/AllStyle";
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { navigationProps } from "../Types/types";
 
-const SignUp = ({navigation}) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+const SignUp: React.FC<navigationProps> = ({ navigation }) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const auth = getAuth();
 
@@ -20,16 +21,16 @@ const SignUp = ({navigation}) => {
               console.log(userCredential.user.email);
             })
             .catch((err) => {
-              alert(err.message);
+              Alert.alert(err.message);
             });
         } else {
-          alert("Password should be at least 6 character.");
+          Alert.alert("Password should be at least 6 character.");
         }
       } else {
-        alert("Confirm Password didn't matched!");
+        Alert.alert("Confirm Password didn't matched!");
       }
     } else {
-      alert("Input field must be fill up");
+      Alert.alert("Input field must be fill up");
     }
   };
 
@@ -72,7 +73,13 @@ const SignUp = ({navigation}) => {
         </Pressable>
       </View>
 
-      <View style={{ flexDirection: "row", marginTop: 20, justifyContent: "center" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          marginTop: 20,
+          justifyContent: "center",
+        }}
+      >
         <Text style={{ color: "#2c3e50", marginRight: 5 }}>
           Have you account?
         </Text>
